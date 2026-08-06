@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Syncro · Apple Watch Ultra 2ª Gen — Pruébalo en tu espacio</title>
+<meta name="description" content="Apple Watch Ultra 2ª Gen GPS + Cellular. Visualízalo en realidad aumentada antes de comprar, con Syncro.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+<style>
+  :root{
+    --bg: #0a0c0f;
+    --panel: #14171c;
+    --panel-line: #262b32;
+    --text: #eef1f4;
+    --text-muted: #8b939c;
+    --cyan: #52e0e8;
+    --orange: #ff5b29;
+    --green-ok: #6ee7a8;
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- background texture ---------- */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(82,224,232,0.07), transparent 40%),
+      radial-gradient(circle at 90% 25%, rgba(255,91,41,0.06), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,12,15,0.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--panel-line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:68px;
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:19px;
+    letter-spacing:0.02em;
+    display:flex; align-items:center; gap:9px;
+  }
+  .logo-mark{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--orange);
+    box-shadow:0 0 10px 2px rgba(255,91,41,0.6);
+  }
+  .nav-links{ display:flex; gap:32px; font-size:13px; font-family:var(--font-mono); color:var(--text-muted); }
+  .nav-links a{ transition:color .2s ease; }
+  .nav-links a:hover{ color:var(--cyan); }
+  @media(max-width:720px){ .nav-links{ display:none; } }
+
+  /* ---------- telemetry ticker ---------- */
+  .ticker{
+    border-bottom:1px solid var(--panel-line);
+    background:var(--panel);
+    overflow:hidden;
+    white-space:nowrap;
+    position:relative;
+  }
+  .ticker-track{
+    display:inline-flex;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-muted);
+    letter-spacing:0.06em;
+    padding:9px 0;
+    animation:scroll 28s linear infinite;
+  }
+  .ticker-track span{ padding:0 26px; display:inline-flex; align-items:center; gap:8px; }
+  .ticker-track span::before{ content:"◆"; color:var(--cyan); font-size:8px; }
+  @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .ticker-track{ animation:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; z-index:1;
+    padding:64px 0 40px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:center;
+  }
+  @media(max-width:900px){ .hero{ grid-template-columns:1fr; padding-top:40px; } }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--cyan);
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:22px; height:1px; background:var(--cyan);
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(34px, 5vw, 54px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    margin-bottom:18px;
+  }
+  h1 em{ font-style:normal; color:var(--cyan); }
+
+  .hero-desc{
+    color:var(--text-muted);
+    font-size:16px;
+    line-height:1.65;
+    max-width:440px;
+    margin-bottom:28px;
+  }
+
+  .price-block{
+    display:flex; align-items:baseline; gap:14px;
+    margin-bottom:30px;
+    font-family:var(--font-mono);
+  }
+  .price-old{
+    color:var(--text-muted);
+    font-size:16px;
+    text-decoration:line-through;
+    text-decoration-color:#ff5b2988;
+  }
+  .price-new{
+    font-size:30px;
+    font-weight:500;
+    color:var(--text);
+  }
+  .price-tag{
+    font-size:11px;
+    background:rgba(110,231,168,0.12);
+    color:var(--green-ok);
+    border:1px solid rgba(110,231,168,0.3);
+    padding:3px 8px;
+    border-radius:4px;
+    letter-spacing:0.04em;
+  }
+
+  .cta-row{ display:flex; flex-wrap:wrap; gap:14px; }
+
+  .btn{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:14.5px;
+    padding:15px 26px;
+    border-radius:10px;
+    display:inline-flex; align-items:center; gap:10px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:active{ transform:scale(0.97); }
+
+  .btn-primary{
+    background:var(--orange);
+    color:#0a0c0f;
+    box-shadow:0 0 0 0 rgba(255,91,41,0.5);
+  }
+  .btn-primary:hover{ box-shadow:0 6px 24px -4px rgba(255,91,41,0.55); }
+  .btn-primary .dot{
+    width:7px; height:7px; border-radius:50%; background:#0a0c0f;
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1;} 50%{ opacity:0.25;} }
+  @media (prefers-reduced-motion: reduce){ .btn-primary .dot{ animation:none; } }
+
+  .btn-secondary{
+    background:transparent;
+    color:var(--text);
+    border-color:var(--panel-line);
+  }
+  .btn-secondary:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  /* ---------- viewer ---------- */
+  .viewer-frame{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:28px;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(82,224,232,0.06), transparent 60%),
+      var(--panel);
+    border:1px solid var(--panel-line);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .viewer-frame::before{
+    content:"";
+    position:absolute; inset:14px;
+    border-radius:22px;
+    border:1px dashed rgba(82,224,232,0.22);
+    pointer-events:none;
+  }
+  .bezel-ticks{
+    position:absolute; inset:0;
+    pointer-events:none;
+  }
+  model-viewer{
+    width:88%; height:88%;
+    --poster-color: transparent;
+    background-color:transparent;
+  }
+  .viewer-caption{
+    position:absolute; bottom:16px; left:16px; right:16px;
+    display:flex; justify-content:space-between;
+    font-family:var(--font-mono); font-size:10.5px;
+    color:var(--text-muted); letter-spacing:0.05em;
+  }
+  .viewer-caption .live{ color:var(--green-ok); display:flex; align-items:center; gap:6px; }
+  .viewer-caption .live::before{
+    content:""; width:6px; height:6px; border-radius:50%; background:var(--green-ok);
+  }
+
+  /* ---------- section shell ---------- */
+  section{ position:relative; z-index:1; padding:88px 0; border-top:1px solid var(--panel-line); }
+  .section-head{ margin-bottom:44px; }
+  .section-head .eyebrow{ margin-bottom:12px; }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(24px, 3vw, 32px);
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- benefits ---------- */
+  .benefits-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--panel-line);
+    border:1px solid var(--panel-line);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  @media(max-width:900px){ .benefits-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:520px){ .benefits-grid{ grid-template-columns:1fr; } }
+
+  .benefit{
+    background:var(--panel);
+    padding:30px 24px;
+  }
+  .benefit .metric{
+    font-family:var(--font-mono);
+    font-size:26px;
+    color:var(--cyan);
+    margin-bottom:14px;
+  }
+  .benefit h3{
+    font-family:var(--font-display);
+    font-size:15.5px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .benefit p{ font-size:13.5px; color:var(--text-muted); line-height:1.55; }
+
+  /* ---------- description ---------- */
+  .desc-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:start;
+  }
+  @media(max-width:900px){ .desc-grid{ grid-template-columns:1fr; } }
+
+  .desc-grid p{ color:var(--text-muted); font-size:15.5px; line-height:1.75; margin-bottom:18px; }
+  .desc-grid strong{ color:var(--text); font-weight:600; }
+
+  .spec-sheet{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:16px;
+    padding:8px 24px;
+  }
+  .spec-row{
+    display:flex; justify-content:space-between;
+    padding:16px 0;
+    border-bottom:1px solid var(--panel-line);
+    font-family:var(--font-mono);
+    font-size:13px;
+  }
+  .spec-row:last-child{ border-bottom:none; }
+  .spec-row .k{ color:var(--text-muted); }
+  .spec-row .v{ color:var(--text); text-align:right; }
+
+  /* ---------- QR / contact ---------- */
+  .contact-panel{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:20px;
+    padding:48px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:44px;
+    align-items:center;
+  }
+  @media(max-width:720px){ .contact-panel{ grid-template-columns:1fr; text-align:center; padding:36px 24px; } }
+
+  .qr-box{
+    width:168px; height:168px;
+    background:#fff;
+    border-radius:14px;
+    padding:12px;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto;
+  }
+  .qr-box img{ width:100%; height:100%; }
+  .qr-caption{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-muted);
+    text-align:center;
+    margin-top:12px;
+    letter-spacing:0.04em;
+  }
+
+  .contact-copy h3{
+    font-family:var(--font-display);
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .contact-copy p{ color:var(--text-muted); font-size:14.5px; line-height:1.6; margin-bottom:24px; max-width:440px; }
+  @media(max-width:720px){ .contact-copy p{ margin-inline:auto; } }
+
+  .store-link{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--cyan);
+    border:1px solid rgba(82,224,232,0.35);
+    padding:12px 18px;
+    border-radius:10px;
+    transition:background .2s ease;
+    word-break:break-all;
+  }
+  .store-link:hover{ background:rgba(82,224,232,0.08); }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--panel-line);
+    padding:32px 0;
+    position:relative; z-index:1;
+  }
+  footer .wrap{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  footer p{ font-family:var(--font-mono); font-size:11.5px; color:var(--text-muted); letter-spacing:0.03em; }
+
+  ::selection{ background:var(--orange); color:#0a0c0f; }
+
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="logo-mark"></span>SYNCRO</div>
+    <div class="nav-links">
+      <a href="#producto">PRODUCTO</a>
+      <a href="#beneficios">BENEFICIOS</a>
+      <a href="#contacto">CONTACTO</a>
+    </div>
+  </nav>
+</header>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>GPS DOBLE FRECUENCIA</span>
+    <span>CAJA DE TITANIO 49MM</span>
+    <span>RESISTENCIA AL AGUA 100M</span>
+    <span>PANTALLA 3000 NITS</span>
+    <span>BOTÓN DE ACCIÓN</span>
+    <span>BATERÍA HASTA 36H</span>
+    <span>GPS DOBLE FRECUENCIA</span>
+    <span>CAJA DE TITANIO 49MM</span>
+    <span>RESISTENCIA AL AGUA 100M</span>
+    <span>PANTALLA 3000 NITS</span>
+    <span>BOTÓN DE ACCIÓN</span>
+    <span>BATERÍA HASTA 36H</span>
+  </div>
+</div>
+
+<main>
+  <section class="hero wrap" id="producto" style="border-top:none; padding-top:64px;">
+    <div>
+      <div class="eyebrow">SYNCRO · REALIDAD AUMENTADA</div>
+      <h1>Apple Watch Ultra<br><em>2ª Generación</em><br>GPS + Cellular</h1>
+      <p class="hero-desc">
+        El reloj más resistente de Apple, diseñado para exploración extrema, deporte de alto rendimiento
+        y uso diario sin límites. Míralo en tu propia muñeca antes de decidir, directo desde tu cámara.
+      </p>
+
+      <div class="price-block">
+        <span class="price-old">$2.199.900 COP</span>
+        <span class="price-new">$1.899.900 COP</span>
+        <span class="price-tag">-14% HOY</span>
+      </div>
+
+      <div class="cta-row">
+        <button class="btn btn-primary" id="ar-button">
+          <span class="dot"></span>
+          Ver en mi espacio
+        </button>
+        <a class="btn btn-secondary" href="https://www.clevercel.co/collections/apple-watch/products/apple-watch-ultra-2da-gen-gps-cellular" target="_blank" rel="noopener">
+          Comprar ahora
+        </a>
+      </div>
+    </div>
+
+    <div class="viewer-frame">
+      <!-- Reemplaza src y poster por los archivos reales de tu modelo 3D -->
+      <model-viewer
+        id="watch-model"
+        src="modelo-apple-watch-ultra.glb"
+        poster="poster-apple-watch-ultra.jpg"
+        alt="Apple Watch Ultra 2ª Gen"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        auto-rotate
+        shadow-intensity="1"
+        exposure="1"
+        environment-image="neutral">
+      </model-viewer>
+      <div class="viewer-caption">
+        <span>MODELO_3D · ULTRA_2</span>
+        <span class="live">LISTO PARA AR</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">POR QUÉ ELEGIRLO</div>
+        <h2>Construido para el límite, cómodo en lo cotidiano</h2>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit">
+          <div class="metric">100M</div>
+          <h3>Resistencia extrema</h3>
+          <p>Certificado para buceo recreativo y resistente al agua hasta 100 metros de profundidad.</p>
+        </div>
+        <div class="benefit">
+          <div class="metric">36H</div>
+          <h3>Autonomía real</h3>
+          <p>Hasta 36 horas de batería en uso normal y 72 horas en modo de baja energía.</p>
+        </div>
+        <div class="benefit">
+          <div class="metric">3000</div>
+          <h3>Pantalla ultra brillante</h3>
+          <p>La pantalla más brillante de Apple, legible bajo el sol más intenso, en nits.</p>
+        </div>
+        <div class="benefit">
+          <div class="metric">Ti</div>
+          <h3>Titanio grado aeroespacial</h3>
+          <p>Caja de titanio de 49mm: liviana, resistente a la corrosión y a impactos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">DESCRIPCIÓN</div>
+        <h2>Un instrumento, no solo un reloj</h2>
+      </div>
+
+      <div class="desc-grid">
+        <div>
+          <p>
+            El <strong>Apple Watch Ultra 2ª Gen</strong> está pensado para quienes exigen precisión en
+            cualquier condición: montaña, mar o ciudad. Su <strong>Botón de Acción</strong> personalizable
+            te da acceso instantáneo a lo que más usas, mientras el <strong>GPS de doble frecuencia</strong>
+            ofrece la ubicación más precisa entre todos los smartwatches de Apple.
+          </p>
+          <p>
+            Con <strong>watchOS</strong> más reciente, entrenamiento avanzado, monitoreo de salud completo y
+            conectividad <strong>Cellular</strong> para llamadas y mensajes sin tu teléfono cerca, es el
+            compañero ideal tanto para expediciones como para el día a día.
+          </p>
+          <p>
+            Usa el visor 3D para girarlo, acercarlo y, con el botón <strong>«Ver en mi espacio»</strong>,
+            proyectarlo en realidad aumentada directamente sobre tu muñeca antes de comprar.
+          </p>
+        </div>
+
+        <div class="spec-sheet">
+          <div class="spec-row"><span class="k">CAJA</span><span class="v">Titanio · 49mm</span></div>
+          <div class="spec-row"><span class="k">CONECTIVIDAD</span><span class="v">GPS + Cellular</span></div>
+          <div class="spec-row"><span class="k">PANTALLA</span><span class="v">Retina LTPO OLED · 3000 nits</span></div>
+          <div class="spec-row"><span class="k">RESISTENCIA</span><span class="v">WR100 · buceo recreativo</span></div>
+          <div class="spec-row"><span class="k">BATERÍA</span><span class="v">Hasta 36h / 72h ahorro</span></div>
+          <div class="spec-row"><span class="k">CHIP</span><span class="v">S9 SiP</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">LLÉVALO HOY</div>
+        <h2>Escanea, pruébalo y compra</h2>
+      </div>
+
+      <div class="contact-panel">
+        <div>
+          <div class="qr-box">
+            <!-- Reemplaza la URL del parámetro "data" por la URL pública de este sitio al publicarlo -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://tu-dominio-aqui.com" alt="Código QR hacia esta página">
+          </div>
+          <div class="qr-caption">ESCANEA PARA ABRIR EN TU CELULAR</div>
+        </div>
+
+        <div class="contact-copy">
+          <h3>¿Listo para tenerlo puesto?</h3>
+          <p>
+            Visita nuestra tienda para conocer stock, medios de pago y tiempos de entrega.
+            El botón «Ver en mi espacio» funciona directo desde tu celular, sin apps adicionales.
+          </p>
+          <a class="store-link" href="https://www.clevercel.co/collections/apple-watch/products/apple-watch-ultra-2da-gen-gps-cellular" target="_blank" rel="noopener">
+            → www.clevercel.co/.../apple-watch-ultra-2da-gen-gps-cellular
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>SYNCRO © 2026 · EXPERIENCIAS WEBAR</p>
+    <p>DISEÑADO PARA WEBXR · SCENE VIEWER · QUICK LOOK</p>
+  </div>
+</footer>
+
+<script>
+  // El botón "Ver en mi espacio" activa el modo AR nativo de <model-viewer>
+  const arButton = document.getElementById('ar-button');
+  const model = document.getElementById('watch-model');
+  arButton.addEventListener('click', () => {
+    model.activateAR();
+  });
+</script>
+
+</body>
+</html>
