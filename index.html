@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
   :root{
@@ -543,10 +544,7 @@
 
       <div class="contact-panel">
         <div>
-          <div class="qr-box">
-            <!-- Reemplaza la URL del parámetro "data" por la URL pública de este sitio al publicarlo -->
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://diegoalejandromartinezquevedo-stack.github.io/Martinez_Diego_Activida_Semana_3_WebAR/" alt="Código QR hacia esta página">
-          </div>
+          <div class="qr-box" id="qrCode"></div>
           <div class="qr-caption">ESCANEA PARA ABRIR EN TU CELULAR</div>
         </div>
 
@@ -578,6 +576,14 @@
   const model = document.getElementById('watch-model');
   arButton.addEventListener('click', () => {
     model.activateAR();
+  });
+
+  // Genera el QR apuntando siempre a la URL actual de esta página
+  new QRCode(document.getElementById('qrCode'), {
+    text: window.location.href,
+    width: 168,
+    height: 168,
+    correctLevel: QRCode.CorrectLevel.H
   });
 </script>
 
